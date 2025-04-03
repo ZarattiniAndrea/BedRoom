@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <title>Index</title>
+</head>
+<body>
+    <p> Benvenuto, {{username}} </p>
+    <p> Per tornare alla home clicca qui: </p>
+    <form method='GET' action="{{url_for('index')}}">
+        <button type='submit'>Home</button>
+    </form> 
+    
+</body>
+</html>
