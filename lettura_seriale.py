@@ -1,5 +1,6 @@
 import serial
 import pymysql
+from datetime import datetime
 
 
 
@@ -10,6 +11,7 @@ DB_NAME="bedroom" #nome del database
 def create_database():
     conn = pymysql.connect(host="127.0.0.1",user="root",password="admin")
     conn.cursor().execute(f"CREATE DATABASE IF NOT EXISTS {DB_NAME};")
+    conn.commit()
     conn.close()
     
 def create_table():
@@ -21,7 +23,19 @@ def create_table():
         umidità INT, 
         ora TIMESTAMP)
     """)
+    conn.commit()
+    conn.close()
 
+def insert_table(values):
+    try: 
+        sql = "INSERT INTO temperature (temperatura, umidità, ora) VALUES (%s, %s, %s)"
+        conn = pymysql.connect(host="127.0.0.1",user="root",password="admin",database=DB_NAME)
+        conn.cursor().execute(sql, values)
+        conn.commit()
+        conn.close()
+        print("Valori inseriti!")
+    except Exception as e:
+        print(f"Fallimento: {e}")
 
 try:
     create_database() # Crea il database se non esiste già
@@ -63,5 +77,10 @@ with open("dati.txt", "a") as file: #Apro il file in modalità append (con sotto
             temperatura = int(float(c[0])) #faccio il casting ad un numero intero partendo da un float
             umidità = int(float(c[1]))
             #print(linea) #scrivo a video
-            print("Temperatura: ", temperatura , " Umidità: ", umidità)
+            timestamp = datetime.now() #genero il timestamp
+            print("Temperatura: ", temperatura , " Umidità: ", umidità, " Orario: ", timestamp)
             file.write(linea + "\n") #scrivo a file
+            
+            valori = (temperatura,umidità,timestamp)
+            #fase di inserimento dati su database
+            insert_table(valori)
