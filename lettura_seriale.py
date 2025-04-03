@@ -1,4 +1,51 @@
 import serial
+import pymysql
+
+
+
+### GESTIONE DEL DATABASE ###
+
+DB_NAME="bedroom" #nome del database
+
+def create_database():
+    conn = pymysql.connect(host="127.0.0.1",user="root",password="admin")
+    conn.cursor().execute(f"CREATE DATABASE IF NOT EXISTS {DB_NAME};")
+    conn.close()
+    
+def create_table():
+    conn = pymysql.connect(host="127.0.0.1",user="root",password="admin",database=DB_NAME)
+    conn.cursor().execute("""
+    CREATE TABLE IF NOT EXISTS temperature(
+        id INT AUTO_INCREMENT PRIMARY KEY, 
+        temperatura INT, 
+        umidità INT, 
+        ora TIMESTAMP)
+    """)
+
+
+try:
+    create_database() # Crea il database se non esiste già
+    print("Database created successfully (if needed)")
+    create_table()
+    print("Table created successfully (if needed)")
+    #Posts.create_table() # Crea la tabella "posts" se non esiste già
+    #print("Table created successfully (if needed)")
+except Exception as e:
+    print(f"Error creating table or database: {e}")
+    
+#connessione al database
+try:
+    db = pymysql.connect(
+        host="127.0.0.1",
+        user="root",
+        password="admin",
+        database=DB_NAME
+    )
+    print("Connessione al database riuscita")
+except Exception as e:
+     print(f"Setup failed: {e}")
+     
+
 
 # Modifica la porta COM in base al tuo sistema (Es. COM3 su Windows, /dev/ttyUSB0 su Linux)
 porta_seriale = "COM13"
