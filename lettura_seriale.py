@@ -59,5 +59,9 @@ with open("dati.txt", "a") as file: #Apro il file in modalità append (con sotto
     while True: 
         if ser.in_waiting > 0:
             linea = ser.readline().decode('utf-8').strip()
-            print(linea) #scrivo a video
+            c = linea.split(",") #separo in c la linea letta sul seriale per ottenere i valori di temperatura e umidità 
+            temperatura = int(float(c[0])) #faccio il casting ad un numero intero partendo da un float
+            umidità = int(float(c[1]))
+            #print(linea) #scrivo a video
+            print("Temperatura: ", temperatura , " Umidità: ", umidità)
             file.write(linea + "\n") #scrivo a file

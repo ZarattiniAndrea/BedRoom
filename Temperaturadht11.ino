@@ -47,10 +47,8 @@ void loop() {
   lcd.print(F("Umid:         %"));
   lcd.setCursor(8,1);
   lcd.print(h);
-  Serial.print(F("Temp: "));
   Serial.print(t);
   Serial.print(",");
-  Serial.print(F(" Umid: "));
   Serial.print(h);
   Serial.println();
 }
