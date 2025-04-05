@@ -42,6 +42,21 @@ def insert_table(values):
         print("Valori inseriti!")
     except Exception as e:
         print(f"Fallimento: {e}")
+        
+        
+def delete_table():
+    try:
+        sql = "DELETE FROM temperature"
+        conn = pymysql.connect(host="127.0.0.1",user="root",password="admin",database=DB_NAME)
+        conn.cursor().execute(sql)
+        conn.commit()
+        sql = "ALTER TABLE temperature AUTO_INCREMENT = 1"
+        conn.cursor().execute(sql)
+        conn.commit()
+        conn.close()
+        print("TUTTI I VALORI SONO ELIMINATI!")
+    except Exception as e: 
+        print(f"Problemi con eliminazione dei dati: {e}")
 
 try:
     create_database() # Crea il database se non esiste già
@@ -50,8 +65,14 @@ try:
     print("Table created successfully (if needed)")
     #Posts.create_table() # Crea la tabella "posts" se non esiste già
     #print("Table created successfully (if needed)")
+    #Per mia politica, ogni volta che accendo Arduino (o riavvio lo start.py che richiama tutti gli altri)
+    
+#cancello la tabella per ricrearla (reset dei dati raccolti). Posso, commentando le seguenti due righe,
+#disattivare questa politica
+    delete_table() #elimino dati dei 
+    
 except Exception as e:
-    print(f"Error creating table or database: {e}")
+    print(f"Error creating/deleting table or database: {e}")
     
 #connessione al database
 try:
