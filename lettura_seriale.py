@@ -9,22 +9,28 @@ from datetime import datetime
 DB_NAME="bedroom" #nome del database
 
 def create_database():
-    conn = pymysql.connect(host="127.0.0.1",user="root",password="admin")
-    conn.cursor().execute(f"CREATE DATABASE IF NOT EXISTS {DB_NAME};")
-    conn.commit()
-    conn.close()
+    try:
+        conn = pymysql.connect(host="127.0.0.1",user="root",password="admin")
+        conn.cursor().execute(f"CREATE DATABASE IF NOT EXISTS {DB_NAME};")
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"Problema con creazione database: {e}")
     
 def create_table():
-    conn = pymysql.connect(host="127.0.0.1",user="root",password="admin",database=DB_NAME)
-    conn.cursor().execute("""
-    CREATE TABLE IF NOT EXISTS temperature(
-        id INT AUTO_INCREMENT PRIMARY KEY, 
-        temperatura INT, 
-        umidità INT, 
-        ora TIMESTAMP)
-    """)
-    conn.commit()
-    conn.close()
+    try:
+        conn = pymysql.connect(host="127.0.0.1",user="root",password="admin",database=DB_NAME)
+        conn.cursor().execute("""
+        CREATE TABLE IF NOT EXISTS temperature(
+            id INT AUTO_INCREMENT PRIMARY KEY, 
+            temperatura INT, 
+            umidità INT, 
+            ora TIMESTAMP)
+        """)
+        conn.commit()
+        conn.close()
+    except Exception as e: 
+        print(f"Errore: {e}")
 
 def insert_table(values):
     try: 
